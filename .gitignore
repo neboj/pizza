@@ -1,0 +1,4 @@
+/node_modules/
+pizza.json
+.env
+.idea/
