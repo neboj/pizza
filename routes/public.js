@@ -1,12 +1,16 @@
 const express = require("express");
 
 const router = express.Router();
-const Order = require("../models/Order");
-const State = require("../models/State");
+const capacityMiddleware = require("../src/middleware/capacity");
+const Order = require("../src/api/components/order/model/Order");
+const {
+  createOrder,
+  addOrder,
+  addCookingTimeToOrder,
+} = require("../src/services/order/registration-service");
 
-const validationUtil = require("../models/utils/validation");
-const helperUtil = require("../models/utils/helper");
 const { json } = require("body-parser");
+const { ValidationError } = require("../src/exceptions/ValidationException");
 
 // Get recent orders
 router.get("/recent", (req, res) => {
@@ -56,84 +60,24 @@ router.get("/:orderId", (req, res) => {
 });
 
 // Post order
-router.post("/", (req, res) => {
-  if (state.public.recentOrders.length === 15) {
-    return res.json({ messsage: "Sorry we are full, try later" });
-  }
+router.post("/", capacityMiddleware, async (req, res) => {
+  try {
+    let order = await createOrder({ ...req.body });
+    order = await addCookingTimeToOrder(order);
+    const savedOrder = await addOrder(order);
 
-  const order = new Order({
-    status: "pending",
-    size: req.body.size,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    address: req.body.address,
-    phone: req.body.phone,
-    ingredients: req.body.ingredients,
-    orderNumber: state.public.recentOrders.length + 1,
-  });
-
-  validationUtil
-    .testValidation(order)
-    .then((data) => {
-      state.orderCount++;
-      // order.orderNumber = state.orderCount;
-      order.orderNumber = state.public.recentOrders.length + 1;
-
-      state.public.recentOrders.push(order);
-
-      const [orderWaitTime, price] = helperUtil.calculateCooking(order);
-      order.orderTime = orderWaitTime;
-      order.orderPrice = price;
-
-      order
-        .save()
-        .then((data) => {
-          //chef handle
-          console.time("TimeTookMakingThisPizza" + order._id);
-          setTimeout(
-            (data) => {
-              console.log("This order is finished: " + data._id);
-              console.timeEnd("TimeTookMakingThisPizza" + data._id);
-
-              state.public.recentOrders.shift();
-              state.public.recentOrders = state.public.recentOrders.map(
-                (current, index) => {
-                  current.orderNumber--;
-                  return current;
-                }
-              );
-
-              // update order db status to done
-              Order.updateOne(
-                { _id: data._id },
-                { $set: { status: "done", orderNumber: -1 } }
-              )
-                .then((data) => {
-                  console.log({ message: "Updated order" });
-                })
-                .catch((err) => {
-                  console.log({ message: err });
-                });
-            },
-            orderWaitTime,
-            data
-          );
-
-          res.json({
-            orderNumber: order.orderNumber,
-            orderWaitTime: data.orderTime,
-            id: data._id,
-            order: data,
-          });
-        })
-        .catch((err) => {
-          console.log(err);
-          res.json({ message: err.message });
-        });
-    })
-    .catch((err) => {
-      return res.json({ message: err });
+    return res.json({
+      orderNumber: order.orderNumber,
+      orderWaitTime: order.orderWaitTime / 1000 + "s",
+      id: savedOrder._id,
+      order: savedOrder,
     });
+  } catch (err) {
+    console.log(err.message);
+    if (err instanceof ValidationError)
+      return res.json({ message: err.message });
+    return res.json({ message: "Sorry, something went wrong" });
+  }
 });
 
 // Cancel (Patch) order by Id

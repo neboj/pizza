@@ -1,12 +1,11 @@
 const express = require("express");
-const { find } = require("../models/Order");
-const Order = require("../models/Order");
+const Order = require("../src/api/components/order/model/Order");
 
 const router = express.Router();
 
 // Get all orders
 router.get("/all", (req, res) => {
-  const orders = Order.find()
+  Order.find()
     .then((data) => {
       console.log(data);
       res.json(data);
@@ -19,7 +18,7 @@ router.get("/all", (req, res) => {
 
 // Get all money spent
 router.get("/money", (req, res) => {
-  const orders = Order.find({ status: "done" }, "orderPrice")
+  Order.find({ status: "done" }, "orderPrice")
     .then((data) => {
       console.log(data);
       let allEarnings = data.reduce((accumulator, current) => {
@@ -35,7 +34,7 @@ router.get("/money", (req, res) => {
 
 // Get all working hours spent
 router.get("/worktime", (req, res) => {
-  const orders = Order.find({ status: "done" }, "orderTime")
+  Order.find({ status: "done" }, "orderTime")
     .then((data) => {
       let allWorkingTime = data.reduce((accumulator, current) => {
         return accumulator + current.orderTime;
@@ -66,7 +65,7 @@ router.get("/ingredients", (req, res) => {
     result[value] = 0;
   }
 
-  const orders = Order.find({ status: "done" }, "ingredients")
+  Order.find({ status: "done" }, "ingredients")
     .then((data) => {
       //fill the result object with db data
       data.forEach((order) => {

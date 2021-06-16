@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const User = require("../models/Users");
+const User = require("../src/api/components/users/model/Users");
 
 //check login cred
 
 router.post("/login", (req, res) => {
-  const user = User.findOne({
+  User.findOne({
     name: req.body.name,
   })
     .then((data) => {

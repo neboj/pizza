@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const StateSchema = mongoose.Schema({
+const OrderSchema = mongoose.Schema({
   size: {
     type: String,
     required: [true, "Pizza size required"],
@@ -53,9 +53,25 @@ const StateSchema = mongoose.Schema({
   orderTime: {
     type: Number,
   },
+  orderWaitTime: {
+    type: Number,
+  },
   orderPrice: {
     type: Number,
   },
 });
 
-module.exports = mongoose.model("State", StateSchema);
+const allOriginalValues = (arr) => {
+  // checks for duplicate values
+  return !arr.some(
+    (current, currentIndex) => arr.indexOf(current) !== currentIndex
+  );
+};
+const validator = (value) => {
+  return allOriginalValues(value);
+};
+OrderSchema.path("ingredients").validate(
+  validator,
+  "`{VALUE}` - repeated ingredient, only once is allowed per pizza !"
+);
+module.exports = mongoose.model("Order", OrderSchema);
