@@ -1,12 +1,12 @@
 const PizzaService = require("../services/pizza/fetch-service");
 const UpdateStateService = require("../services/state/update-service");
-const StateService = require("../services/state/state-service");
+const OrderService = require("../services/state/order-service");
 
 const calculateCooking = (order) => {
   const priceOfThisPizza = PizzaService.getPrice(order);
   const timeForThisPizza = PizzaService.getCookingTime(order);
 
-  const orderWaitTime = StateService.getWaitTimeForOrder(
+  const orderWaitTime = OrderService.getWaitTimeForOrder(
     order,
     timeForThisPizza
   );
