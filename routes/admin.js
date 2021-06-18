@@ -1,5 +1,5 @@
 const express = require("express");
-const Order = require("../src/api/components/order/model/Order");
+const Order = require("../src/components/order/model/Order");
 
 const router = express.Router();
 

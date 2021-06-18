@@ -14,8 +14,8 @@ const CacheService = require("./services/cache/prepare-service");
 const GlobalStateService = require("./services/state/restore-service");
 
 //schemas
-const Ingredient = require("./api/components/ingredient/model/Ingredient");
-const Pizza = require("./api/components/pizza/model/Pizza");
+const Ingredient = require("./components/ingredient/model/Ingredient");
+const Pizza = require("./components/pizza/model/Pizza");
 
 //import routes
 const orderRoutes = require("../routes/public");

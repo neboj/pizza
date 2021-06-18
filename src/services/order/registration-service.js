@@ -1,11 +1,11 @@
 const { Chef } = require("../../utils/Chef");
 const {
   OrderFactoryMethod,
-} = require("../../api/components/order/factoryMethod/OrderFactoryMethod");
+} = require("../../components/order/factoryMethod/OrderFactoryMethod");
 const { validate } = require("../../utils/Validator");
 const {
   CookingTimeDecorator,
-} = require("../../api/components/order/decorator/CookingTime");
+} = require("../../components/order/decorator/CookingTime");
 const OrderStateService = require("../state/order-service");
 const { ValidationError } = require("../../exceptions/ValidationException");
 

@@ -1,4 +1,4 @@
-const helperUtil = require("../../../../utils/helper");
+const helperUtil = require("../../../utils/helper");
 
 class CookingTimeDecorator {
   decorate(order) {

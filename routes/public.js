@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 const capacityMiddleware = require("../src/middleware/capacity");
-const Order = require("../src/api/components/order/model/Order");
+const Order = require("../src/components/order/model/Order");
 const {
   createOrder,
   addOrder,

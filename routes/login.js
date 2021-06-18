@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const User = require("../src/api/components/users/model/Users");
+const User = require("../src/components/users/model/Users");
 
 //check login cred
 

@@ -1,5 +1,5 @@
 //schemas
-const Order = require("../../api/components/order/model/Order");
+const Order = require("../../components/order/model/Order");
 
 //services
 const OrderService = require("../order/registration-service");

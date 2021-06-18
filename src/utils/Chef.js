@@ -1,6 +1,6 @@
 const {
   OrderRepository,
-} = require("../api/components/order/repository/Order");
+} = require("../components/order/repository/Order");
 const StateOrderService = require("../services/state/order-service");
 
 class Chef {
