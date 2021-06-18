@@ -3,11 +3,7 @@ const express = require("express");
 const router = express.Router();
 const capacityMiddleware = require("../src/middleware/capacity");
 const Order = require("../src/components/order/model/Order");
-const {
-  createOrder,
-  addOrder,
-  addCookingTimeToOrder,
-} = require("../src/services/order/registration-service");
+const OrderService = require("../src/components/order/service/registration-service");
 
 const { json } = require("body-parser");
 const { ValidationError } = require("../src/exceptions/ValidationException");
@@ -62,9 +58,9 @@ router.get("/:orderId", (req, res) => {
 // Post order
 router.post("/", capacityMiddleware, async (req, res) => {
   try {
-    let order = await createOrder({ ...req.body });
-    order = await addCookingTimeToOrder(order);
-    const savedOrder = await addOrder(order);
+    let order = await OrderService.createOrder(req.body);
+    order = await OrderService.addCookingTimeToOrder(order);
+    const savedOrder = await OrderService.addOrder(order);
 
     return res.json({
       orderNumber: order.orderNumber,

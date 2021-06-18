@@ -1,13 +1,9 @@
-const { Chef } = require("../../utils/Chef");
-const {
-  OrderFactoryMethod,
-} = require("../../components/order/factoryMethod/OrderFactoryMethod");
-const { validate } = require("../../utils/Validator");
-const {
-  CookingTimeDecorator,
-} = require("../../components/order/decorator/CookingTime");
-const OrderStateService = require("../state/order-service");
-const { ValidationError } = require("../../exceptions/ValidationException");
+const { Chef } = require("../../../utils/Chef");
+const { OrderFactoryMethod } = require("../factoryMethod/OrderFactoryMethod");
+const { validate } = require("../../../utils/Validator");
+const { CookingTimeDecorator } = require("../decorator/CookingTime");
+const OrderStateService = require("../../../services/state/order-service");
+const { ValidationError } = require("../../../exceptions/ValidationException");
 
 /**
  * Creates and validates new Order Schema doc object
@@ -16,9 +12,9 @@ const { ValidationError } = require("../../exceptions/ValidationException");
  * @returns
  */
 const createOrder = async (data) => {
+  const orderFactoryMethod = new OrderFactoryMethod();
+  let order = orderFactoryMethod.make(data);
   try {
-    const orderFactoryMethod = new OrderFactoryMethod();
-    let order = orderFactoryMethod.make(data);
     validate(order);
     return order;
   } catch (err) {

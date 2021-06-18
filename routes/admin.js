@@ -51,16 +51,15 @@ router.get("/worktime", (req, res) => {
 
 // Get time since last server start
 router.get("/apptime", (req, res) => {
-  let result = Date.now() - state.admin.serverStartTime;
-  result += "ms";
+  const result = parseInt(Date.now() - state.admin.serverStartTime) + "ms";
   res.json({ result });
 });
 
 // Get top 5 ingredients
 router.get("/ingredients", (req, res) => {
-  let ingredientsFull = state.cache.ingredients;
-  let ingredients = ingredientsFull.map((current) => current.name);
-  let result = {};
+  const ingredientsFull = state.cache.ingredients;
+  const ingredients = ingredientsFull.map((current) => current.name);
+  const result = {};
   for (const [key, value] of Object.entries(ingredients)) {
     result[value] = 0;
   }

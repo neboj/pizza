@@ -2,7 +2,7 @@
 const Order = require("../../components/order/model/Order");
 
 //services
-const OrderService = require("../order/registration-service");
+const OrderService = require("../../components/order/service/registration-service");
 
 module.exports = {
   restorePreviousState: async () => {

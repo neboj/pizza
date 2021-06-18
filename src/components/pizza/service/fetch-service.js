@@ -1,4 +1,4 @@
-const IngredientsService = require("../ingredients/fetch-service");
+const IngredientsService = require("../../ingredient/service/fetch-service");
 
 const getPizza = (order) => {
   const currentPizza = state.cache.pizzas.find((pizza) => {

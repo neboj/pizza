@@ -1,4 +1,4 @@
-const PizzaService = require("../services/pizza/fetch-service");
+const PizzaService = require("../components/pizza/service/fetch-service");
 const UpdateStateService = require("../services/state/update-service");
 const OrderService = require("../services/state/order-service");
 
