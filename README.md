@@ -2,7 +2,7 @@
   Pizza
 </h1>
 
-Pizza ordering REST API using Express and Mongoose.
+Pizza ordering RESTful API built with Express and MongoDB.
 
 ### Quick start
 
